@@ -1,0 +1,7 @@
+@import "../../styles/variables.css";
+@import "../../styles/mixins.css";
+
+.homePageWrapper {
+  display: flex;
+  flex-direction: column;
+}

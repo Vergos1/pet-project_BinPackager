@@ -1,0 +1,23 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+.header {
+  width: 100%;
+  background-color: $header-background-color;
+}
+
+.headerContainer {
+  margin: 0 auto;
+  padding: 10px 0;
+  max-width: 1420px;
+  width: 90%;
+}
+
+.headerWrapper {
+  @include flex-v-center;
+}
+
+.headerLogo {
+  width: 50px;
+  height: 50px;
+}

@@ -4,6 +4,7 @@ declare module '*.svg' {
     const src: any;
     export default src;
 }
+
 declare module '*.jpg' {
     const content: any;
     export default content;

@@ -1,0 +1,52 @@
+@import "../../styles/mixins";
+
+.binsView {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  margin: 0 auto;
+}
+
+.binsWrapper {
+  height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 24px;
+  @include gap(100px);
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: #2C2C32;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: white;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+}
+
+.binsSheetCount {
+  z-index: 100;
+  margin: 10px 0;
+  position: absolute;
+  bottom: -25px;
+  right: -10px;
+  background: #2C2C32;
+  color: #00E0C7;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 8px 12px;
+  width: max-content;
+  border: 2px solid #c0c0c0;
+}
+
+.binsSheet {
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #c0c0c0;
+}

@@ -1,0 +1,71 @@
+@import "../../styles/mixins";
+
+.binsSidebar {
+  max-width: 350px;
+  @include gap(32px);
+}
+
+.binsControllers {
+  @include flex-v-center;
+  @include gap(16px);
+  background: #2C2C32;
+  border-radius: 10px;
+  padding: 24px;
+  flex-wrap: wrap;
+}
+.binsInputWrapper {
+  @include gap(4px);
+}
+.binsInput {
+  max-width: 100%;
+  background: white;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  &[type="number"] {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  }
+}
+
+.binsCreateButton {
+  background: black;
+  border-radius: 8px;
+  padding: 8px 24px;
+  color: white;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #00E0C7;
+  }
+}
+
+.binsInformation {
+  @include gap(16px);
+  border-radius: 10px;
+  padding: 24px;
+  width: max-content;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  background: #2C2C32;
+}
+
+.binsInformationTitle {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.binsText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #cccccc;
+}
+
+.binsSelectedElements {
+  font-size: 16px;
+  font-weight: 700;
+  color: #00E0C7;
+}

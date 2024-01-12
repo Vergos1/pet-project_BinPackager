@@ -1,0 +1,42 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+.preloaderWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  @include flex-all-center;
+}
+
+.preloaderText {
+  color: $default-color;
+  animation: blink 1.5s infinite;
+}
+
+
+//doc: base animation preloader
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
