@@ -1,96 +1,72 @@
-export default function binpack(boxes: Box[]): PackingResult {
-    let area = 0;
-    let maxWidth = 0;
+// Функція для вставки вузла в бінарне дерево упаковки.
+// використовується для розміщення прямокутників в заданому просторі.
+function insertNode(root: BinsNode, w: number, h: number): BinsNode | null | undefined {
 
-    for (const box of boxes) {
-        area += box.w * box.h;
-        maxWidth = Math.max(maxWidth, box.w);
+    // Якщо поточний вузол вже використовується,
+    // шукаємо вільне місце праворуч або внизу
+    if (root.used) {
+        return (
+         (root.right && insertNode(root.right, w, h)) ||
+         (root.down && insertNode(root.down, w, h))
+        );
+    } else if (
+     w <= root.w && h <= root.h
+    ) {
+
+        // Якщо прямокутник поміщається
+        // в поточний вузол, виконуємо його розбиття
+        root.used = true;
+
+        //doc: Створення нових вузлів для правої та нижньої частини вільного простору
+        root.down = {
+            x: root.x,
+            y: root.y + h,
+            w: root.w,
+            h: root.h - h,
+            used: false,
+            right: null,
+            down: null
+        };
+        root.right = {
+            x: root.x + w,
+            y: root.y,
+            w: root.w - w,
+            h: h,
+            used: false,
+            right: null,
+            down: null
+        };
+
+        // Якщо прямокутник не поміщається,
+        // повертаємо null
+        return root;
+    } else {
+        return null;
     }
+}
 
-    boxes.sort((a, b) => b.h - a.h);
+// Основна функція для упаковки прямокутників у визначений простір
+export default function binPack(boxes: Box[], w: number, h: number): Box[] {
+    //doc: Ініціалізація кореневого вузла
+    // з максимальними розмірами
+    let root: BinsNode = {x: 0, y: 0, w: w, h: h};
 
-    const startWidth = Math.max(Math.ceil(Math.sqrt(area / 0.95)), maxWidth);
-    const spaces: { x: number; y: number; w: number; h: number; }[] = [{ x: 0, y: 0, w: startWidth, h: Infinity }];
+    let packedBoxes: Box[] = [];
 
-    let width = 0;
-    let height = 0;
+    for (let box of boxes) {
+        //doc: Спроба вставки
+        // кожного прямокутника в дерево упаковки
+        let node = insertNode(root, box.w, box.h);
 
-    for (const box of boxes) {
-        let placed = false;
-
-        for (let i = spaces.length - 1; i >= 0; i--) {
-            const space = spaces[i];
-
-            if (box.w <= space.w && box.h <= space.h) {
-                box.x = space.x;
-                box.y = space.y;
-                placed = true;
-
-                height = Math.max(height, box.y + box.h);
-                width = Math.max(width, box.x + box.w);
-
-                if (box.w === space.w && box.h === space.h) {
-                    spaces.splice(i, 1);
-                } else if (box.h === space.h) {
-                    space.x += box.w;
-                    space.w -= box.w;
-                } else if (box.w === space.w) {
-                    space.y += box.h;
-                    space.h -= box.h;
-                } else {
-                    spaces.push({
-                        x: space.x + box.w,
-                        y: space.y,
-                        w: space.w - box.w,
-                        h: box.h
-                    });
-                    space.y += box.h;
-                    space.h -= box.h;
-                }
-                break;
-            }
-        }
-
-        if (!placed) {
-            spaces.sort((a, b) => a.w - b.w);
-            const space = spaces.find(s => s.w >= box.w && s.h >= box.h);
-            if (space) {
-                box.x = space.x;
-                box.y = space.y;
-                placed = true;
-
-                height = Math.max(height, box.y + box.h);
-                width = Math.max(width, box.x + box.w);
-
-                if (box.w === space.w && box.h === space.h) {
-                    spaces.splice(spaces.indexOf(space), 1);
-                } else if (box.h === space.h) {
-                    space.x += box.w;
-                    space.w -= box.w;
-                } else if (box.w === space.w) {
-                    space.y += box.h;
-                    space.h -= box.h;
-                } else {
-                    spaces.push({
-                        x: space.x + box.w,
-                        y: space.y,
-                        w: space.w - box.w,
-                        h: box.h
-                    });
-                    space.y += box.h;
-                    space.h -= box.h;
-                }
-            }
-        }
-
-        if (!placed) {
-            throw new Error('Неможливо розмістити блок: ' + JSON.stringify(box));
+        //doc: Якщо вставка успішна,
+        // зберігаємо координати у прямокутнику
+        if (node) {
+            box.x = node.x;
+            box.y = node.y;
+            packedBoxes.push(box);
         }
     }
 
-    return {
-        w: width,
-        h: height,
-        fill: (area / (width * height)) || 0
-    };
+    //doc: Повертаємо упаковані прямокутники
+    return packedBoxes;
 }

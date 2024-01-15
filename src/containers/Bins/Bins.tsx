@@ -1,101 +1,66 @@
 import styles from './bins.module.scss';
 import React, {useState, useEffect} from 'react';
-import binpack from "../../controllers/BinsPacker/binsPacker.ts";
-import BinsSidebar from "../../components/binsSidebar/binsSidebar.tsx";
-
+import binPack from "../../controllers/BinsPacker/binsPacker.ts";
+import BinsSidebar from "../binsSidebar/binsSidebar.tsx";
+import Sheets from "../../components/Sheets/Sheets.tsx";
 //doc: import types
-import {BinsProps, PackedSheet} from "./bins.types.ts";
+import {BinsProps, Block, PackedSheet} from "./bins.types.ts";
 
 
 const Bins: React.FC<BinsProps> = ({blocks, sheetWidth, sheetHeight}) => {
-
+    //doc: Стан для зберігання упакованих листів.
     const [packedSheets, setPackedSheets] = useState<PackedSheet[]>([]);
-    console.log(packedSheets);
 
     useEffect(() => {
-        packBlocks();
+        //doc: Автоматичне викликання функції упаковки при зміні блоків.
+        packBlocks(blocks);
     }, [blocks]);
 
-    const packBlocks = () => {
+    //doc: Функція для упаковки блоків на листи.
+    const packBlocks = (blocks: Block[]) => {
         let remainingBlocks = [...blocks];
         let sheets = [];
-        let currentSheetBlocks = [];
+        let currentSheetBlocks: Block[] = [];
 
         while (remainingBlocks.length > 0) {
-            let blockToAdd = remainingBlocks.shift();
-            if (!blockToAdd) break;
-
+            let blockToAdd: any = {...remainingBlocks.shift()};
             currentSheetBlocks.push(blockToAdd);
-            let packed = binpack(currentSheetBlocks);
 
-            if (packed.w <= sheetWidth && packed.h <= sheetHeight) {
-                currentSheetBlocks = currentSheetBlocks.map(block => ({
-                    ...block,
-                    x: block.x,
-                    y: block.y,
-                    w: block.w,
-                    h: block.h
-                }));
+            let packed = binPack(currentSheetBlocks, sheetWidth, sheetHeight);
+
+            //doc: Перевірка та обробка випадків,
+            // коли блоки не можуть бути упаковані на одному листі.
+            if (packed.length === currentSheetBlocks.length) {
+                currentSheetBlocks = [...packed];
             } else {
-                remainingBlocks.unshift(blockToAdd);
-                currentSheetBlocks.pop();
-
-                if (currentSheetBlocks.length === 0) {
-                    console.error('Блок занадто великий для будь-якого аркуша:', blockToAdd);
-                    continue;
+                //doc: Якщо останній блок не поміщається,
+                // він переміщається на новий лист.
+                if (currentSheetBlocks.length > 1) {
+                    sheets.push([...currentSheetBlocks.slice(0, -1)]);
+                    currentSheetBlocks = [currentSheetBlocks[currentSheetBlocks.length - 1]];
+                } else {
+                    sheets.push([...currentSheetBlocks]);
+                    currentSheetBlocks = [];
                 }
-
-                sheets.push(currentSheetBlocks);
-                currentSheetBlocks = [];
             }
         }
 
         if (currentSheetBlocks.length > 0) {
-            sheets.push(currentSheetBlocks);
+            sheets.push([...currentSheetBlocks]);
         }
 
         setPackedSheets(sheets);
     };
 
+    console.log(packedSheets);
+
     return (
 
      <div className={styles.binsView}>
-         <BinsSidebar packedSheets={packedSheets} blocks={blocks} sheetWidth={sheetWidth} sheetHeight={sheetHeight}/>
+         <BinsSidebar packedSheets={packedSheets}/>
          <div className={styles.binsWrapper}>
-             {packedSheets.map((sheetBlocks, sheetIndex) => (
-              <div
-               key={sheetIndex}
-               style={{position: 'relative'}}
-              >
-                  <span className={styles.binsSheetCount}>#{sheetIndex + 1}</span>
-                  <div
-                   className={styles.binsSheet}
-                   style={{
-                       width: `${sheetWidth}px`,
-                       height: `${sheetHeight}px`,
-                   }}
-                  >
-                      <div style={{
-                          position: 'relative'
-                      }}>
-                          {sheetBlocks.map((block, blockIndex) => (
-                           <div
-                            key={blockIndex}
-                            style={{
-                                width: `${block.w}px`,
-                                height: `${block.h}px`,
-                                position: 'absolute',
-                                top: `${block.y}px`,
-                                left: `${block.x}px`,
-                                backgroundColor: ' #1d1c28',
-                                border: '1px solid #646464',
-                                boxSizing: 'border-box'
-                            }}/>
-                          ))}
-                      </div>
-                  </div>
-              </div>
-             ))}
+             {/*//doc: Відображення кожного листа з упакованими блоками.*/}
+             <Sheets packedSheets={packedSheets}/>
          </div>
      </div>
     );

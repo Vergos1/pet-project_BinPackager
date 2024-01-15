@@ -1,0 +1,37 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+.binsSidebar {
+  max-width: 350px;
+  @include gap(32px);
+  grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
+}
+
+.binsInformation {
+  @include gap(16px);
+  border-radius: 10px;
+  padding: 24px;
+  width: max-content;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  background: $block-background-color;
+}
+
+.binsInformationTitle {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.binsText {
+  font-size: 14px;
+  font-weight: 500;
+  color: $default-color;
+}
+
+.binsSelectedElements {
+  font-size: 16px;
+  font-weight: 700;
+  color: $selected-color;
+}

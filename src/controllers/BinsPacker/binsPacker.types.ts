@@ -5,8 +5,12 @@ type Box = {
     y?: number;
 };
 
-type PackingResult = {
+interface BinsNode {
+    x: number;
+    y: number;
     w: number;
     h: number;
-    fill: number;
-};
+    used?: boolean;
+    right?: BinsNode | null;
+    down?: BinsNode | null;
+}

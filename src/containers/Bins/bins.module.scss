@@ -1,15 +1,21 @@
 @import "../../styles/mixins";
+@import "../../styles/variables";
 
 .binsView {
   width: 100%;
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: 60% 1fr;
   align-items: flex-start;
+  justify-content: center;
   margin: 0 auto;
+  @include desktop {
+    grid-template-columns: 1fr;
+  }
 }
 
 .binsWrapper {
-  height: 500px;
+  height: 550px;
+  width: 550px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 24px;
@@ -18,35 +24,12 @@
   &::-webkit-scrollbar {
     width: 10px;
     height: 10px;
-    background-color: #2C2C32;
+    background-color: $block-background-color;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: white;
+    background-color: $white-color;
     border: 2px solid transparent;
     background-clip: content-box;
   }
-}
-
-.binsSheetCount {
-  z-index: 100;
-  margin: 10px 0;
-  position: absolute;
-  bottom: -25px;
-  right: -10px;
-  background: #2C2C32;
-  color: #00E0C7;
-  font-weight: 700;
-  font-size: 14px;
-  border-radius: 4px;
-  padding: 8px 12px;
-  width: max-content;
-  border: 2px solid #c0c0c0;
-}
-
-.binsSheet {
-  margin: auto;
-  position: relative;
-  overflow: hidden;
-  border: 2px solid #c0c0c0;
 }

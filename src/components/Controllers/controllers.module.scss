@@ -1,0 +1,51 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+.binsControllers {
+  @include flex-v-center;
+  @include gap(16px);
+  background: $block-background-color;
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.binsInputWrapper {
+  @include gap(4px);
+}
+
+.binsButtonsWrapper {
+  @include flex-v-center;
+  @include gap(8px);
+}
+
+.binsInput {
+  max-width: 100%;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+
+  &::placeholder {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  &[type="number"] {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  }
+}
+
+.binsCreateButton {
+  background: black;
+  border-radius: 8px;
+  padding: 8px 24px;
+  color: $white-color;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: $selected-color;
+  }
+}

@@ -1,0 +1,45 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+.binsSheetCount {
+  z-index: 100;
+  margin: 10px 0;
+  position: absolute;
+  bottom: -25px;
+  right: -10px;
+  background: $block-background-color;
+  color: $selected-color;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 8px 12px;
+  width: max-content;
+  border: 2px solid $grey-border;
+}
+
+.binsSheet {
+  width: 500px;
+  height: 500px;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid $grey-border;
+}
+
+.binsSheetWrapper {
+  height: 500px;
+  animation: fadeIn 0.25s ease;
+}
+
+.binsBlock {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -1,9 +1,9 @@
 import {configureStore} from '@reduxjs/toolkit'
-import {addBins} from './slices/bins.slice.ts'
+import binsSlice from './slices/bins.slice.ts'
 
 export const store = configureStore({
     reducer: {
-        bins: addBins
+        bins: binsSlice
     },
     devTools: true
 })
